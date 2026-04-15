@@ -25,10 +25,12 @@ Given a YouTube URL, execute the `get_transcript.sh` script to fetch the transcr
 
 ### 3. Determine Save Location
 - **Path Selection:** Check if the user specified a destination path in their request.
-- **User Prompt:** If no path was provided, ASK the user: "Where would you like me to save the generated Markdown file? (e.g., './instructions.md')"
+- **File Name Convention:** Use the video's title as the file name (e.g., `GRBL with Arduino CNC Shield - Complete Guide.md`).
+- **User Prompt:** If no path was provided, ASK the user: "Where would you like me to save the generated Markdown file? (e.g., './GRBL with Arduino CNC Shield - Complete Guide.md')"
 
 ### 4. Generate Instructions
 Once the transcript text is retrieved and the destination is known:
+- **Extract Description Information:** Extract useful information and links from the video description.
 - **Clean the Text:** Remove filler words (e.g., "uh", "um", "like", "so").
 - **Header:** You MUST add a header to the top of the file following the format in `assets/header-example.md`.
     - Extract the **Title** of the video.
@@ -43,6 +45,7 @@ Once the transcript text is retrieved and the destination is known:
     - **Requirements:** List any tools or materials mentioned.
     - **Steps:** A numbered list of clear, actionable steps.
     - **Tips/Warnings:** Include any specific advice from the transcript.
+    - **Resources:** List useful links and supplementary information extracted from the video description.
 - **Save File:** Write the content to the chosen destination path.
 
 ## Implementation Details
