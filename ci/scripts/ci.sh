@@ -1,13 +1,14 @@
 #!/bin/bash
 set -e
 
-# Usage: ci.sh <new_branch_name> <commit_message>
+# Usage: ci.sh <new_branch_name> <commit_message> [pr_description]
 NEW_BRANCH=$1
 COMMIT_MESSAGE=$2
+PR_DESCRIPTION=${3:-"Pull request created automatically by Gemini CLI 'ci' skill."}
 
 if [ -z "$NEW_BRANCH" ] || [ -z "$COMMIT_MESSAGE" ]; then
     echo "Error: Branch name and commit message are required."
-    echo "Usage: ./ci.sh <branch-name> \"<commit message>\""
+    echo "Usage: ./ci.sh <branch-name> \"<commit message>\" [\"<pr description>\"]"
     exit 1
 fi
 
