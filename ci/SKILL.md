@@ -17,13 +17,14 @@ When the user triggers this skill (e.g., by saying "ci", "wrap up my work", or "
 2. **Determine Metadata**:
    - **Branch Name**: Propose a concise, hyphenated branch name based on the changes (e.g., `fix-parser-bug`, `feat-auth-logic`).
    - **Commit Message**: Propose a clear, descriptive commit message following project conventions.
-3. **Confirm with User**: Present the proposed branch name and commit message to the user for approval or modification.
+   - **PR Description**: Generate a detailed Markdown-formatted description summarizing the changes, the "why" behind them, and any testing performed.
+3. **Confirm with User**: Present the proposed branch name, commit message, and PR description to the user for approval or modification.
 4. **Execute Automation**: Use the bundled `ci.sh` script to perform the operations.
 
 ### Execution Command
 
 ```bash
-./scripts/ci.sh <branch_name> "<commit_message>"
+./scripts/ci.sh <branch_name> "<commit_message>" "<pr_description>"
 ```
 
 The script will:
@@ -42,7 +43,12 @@ The script will:
 ## Examples
 
 **User**: "ci"
-**Agent**: "I see you have changes in `src/parser.ts`. I propose creating a branch named `fix-parser-logic` and committing with the message 'Fix: Resolve timeout issue in parser'. Shall I proceed with creating the PR?"
+**Agent**: "I see you have changes in `src/parser.ts`. I propose:
+- **Branch**: `fix-parser-logic`
+- **Commit**: `Fix: Resolve timeout issue in parser`
+- **PR Description**: A summary of the parser changes and the fix for the timeout bug.
+
+Shall I proceed with creating the PR?"
 
 **User**: "wrap up this work and call the branch feature-x"
-**Agent**: "Understood. I'll create the branch `feature-x`, commit your changes with a descriptive message, and open a PR against `main`. Proceeding now..."
+**Agent**: "Understood. I'll create the branch `feature-x`, commit your changes with a descriptive message, and open a PR with a detailed description of the work. Proceeding now..."
