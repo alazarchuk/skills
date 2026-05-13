@@ -1,14 +1,14 @@
 #!/bin/bash
 set -e
 
-# Usage: ci.sh <new_branch_name> <commit_message> [pr_description]
+# Usage: ci.sh <new_branch_name> <commit_message> <pr_description>
 NEW_BRANCH=$1
 COMMIT_MESSAGE=$2
-PR_DESCRIPTION=${3:-"Pull request created automatically by Gemini CLI 'ci' skill."}
+PR_DESCRIPTION=$3
 
-if [ -z "$NEW_BRANCH" ] || [ -z "$COMMIT_MESSAGE" ]; then
-    echo "Error: Branch name and commit message are required."
-    echo "Usage: ./ci.sh <branch-name> \"<commit message>\" [\"<pr description>\"]"
+if [ -z "$NEW_BRANCH" ] || [ -z "$COMMIT_MESSAGE" ] || [ -z "$PR_DESCRIPTION" ]; then
+    echo "Error: Branch name, commit message, and PR description are required."
+    echo "Usage: ./ci.sh <branch-name> \"<commit message>\" \"<pr description>\""
     exit 1
 fi
 
@@ -43,6 +43,6 @@ git push -u "$REMOTE" "$NEW_BRANCH"
 
 # Create PR against the base branch
 echo "Creating Pull Request against $BASE_BRANCH..."
-gh pr create --base "$BASE_BRANCH" --head "$NEW_BRANCH" --title "$COMMIT_MESSAGE" --body "Pull request created automatically by Gemini CLI 'ci' skill."
+gh pr create --base "$BASE_BRANCH" --head "$NEW_BRANCH" --title "$COMMIT_MESSAGE" --body "$PR_DESCRIPTION"
 
 echo "Success! PR created and changes pushed."
