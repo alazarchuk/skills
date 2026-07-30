@@ -12,6 +12,7 @@ This skill provides a comprehensive workflow to clean, reformat, and enrich raw,
 ## When to Use This Skill
 
 Use this skill whenever you need to:
+
 - Reformat raw web clippings or Notion exports in the workspace.
 - Remove Notion export ID hashes from filenames and attachment subdirectories.
 - Inspect and fix extensionless image attachments.
@@ -24,17 +25,20 @@ Use this skill whenever you need to:
 ## Core Workflow Steps
 
 ### Step 1: Filename & Directory Cleanup (Removing Notion Hashes)
+
 1. **Detect Notion Hashes:** Check if the target `.md` file or its associated attachment folder contains hex export IDs (e.g. ` 6116616e160f4d53a5f2f418349367de`).
 2. **Rename File & Folder:** Rename both the `.md` file and its attachment subdirectory to clean, descriptive titles.
-3. **Update Internal Links:** Update all internal markdown links and image embed paths (`![caption](folder/image.jpg)`) inside the `.md` file to reference the updated folder name.
+3. **Update Internal Links:** Update all internal markdown links and image embed paths (`![caption](folder/image.jpg)`) inside the `.md` file to reference the updated folder name using **URL-encoded relative paths** (e.g., spaces replaced with `%20`).
 
-### Step 2: Attachment MIME-Type Inspection & Extension Fix
+### Step 2: Attachment MIME-Type Inspection & URL-Encoded Extension Fix
+
 1. **Find Extensionless Files:** Scan attachment folders for files missing extension extensions (e.g., `untitled`, `untitled 1`).
 2. **Detect MIME Type:** Run `file --mime-type <path>` on each extensionless attachment file.
 3. **Rename with Correct Extension:** Append the correct extension based on MIME type (e.g., `image/jpeg` → `.jpg`, `image/png` → `.png`).
-4. **Update Image Embeds:** Update all image embed paths in the Markdown file to include the new extension (e.g., `![caption](folder/untitled.jpg)`).
+4. **URL-Encode Image Embed Paths:** Update all image embed paths in the Markdown file using **URL-encoded relative paths** (e.g. `![caption](Folder%20Name/untitled%201.jpg)` instead of unencoded `Folder Name/untitled 1.jpg`). Ensure spaces, quotes, ampersands, and non-ASCII characters in relative paths are properly percent-encoded using standard HTTP URL encoding.
 
 ### Step 3: Web Noise & Header Cleanup
+
 1. **Remove Duplicate Headers:** Keep only a single main `# Title` heading.
 2. **Strip Web Artifacts:** Remove web clipping junk, including:
    - Newsletter / subscription prompts
@@ -44,6 +48,7 @@ Use this skill whenever you need to:
    - Non-content navigation elements ("On Sale near you")
 
 ### Step 4: YAML Frontmatter & Layout Standardization
+
 1. **Add YAML Metadata Block:**
    ```yaml
    ---
@@ -73,6 +78,7 @@ Use this skill whenever you need to:
      - `> [!IMPORTANT]` for critical instructions or safety warnings.
 
 ### Step 5: Content Enrichment (Optional YouTube Transcript Analysis)
+
 1. **Fetch Transcript:** If a YouTube URL is provided or referenced, run the transcript script:
    ```bash
    /home/alazarchuk/Documents/Outliner/.agents/skills/youtube-video-to-article-md/scripts/get_transcript.sh "<YOUTUBE_URL>" en
@@ -87,22 +93,29 @@ Use this skill whenever you need to:
 ## Example Usage
 
 ### Input (Raw Notion/Web Dump)
+
 ```markdown
 # Creamy White Wine Sauce Recipe
+
 Tags: next
 Created: April 30, 2018 11:41 AM
 URL: https://www.allrecipes.com/recipe/20895/creamy-white-wine-sauce/?prop26=123
 
 # Creamy White Wine Sauce
+
 Recipe by: sal
+
 ## Like Vegetarian recipes? Follow for recommendations
+
 - 1 cup heavy whipping cream
 - 3/4 cup white wine
-[Print] [Add Note]
+  [Print] [Add Note]
+
 1. In saucepan combine cream, wine...
 ```
 
 ### Output (Clean Enriched Markdown)
+
 ```markdown
 ---
 title: "Creamy White Wine Sauce"
@@ -126,12 +139,12 @@ A simple yet elegant sauce made from dry white wine and heavy cream simmered wit
 
 ## Recipe Overview
 
-| Attribute | Details |
-| :--- | :--- |
-| **Prep Time** | 0 mins |
-| **Cook Time** | 15 mins |
+| Attribute      | Details |
+| :------------- | :------ |
+| **Prep Time**  | 0 mins  |
+| **Cook Time**  | 15 mins |
 | **Total Time** | 15 mins |
-| **Servings** | 8 |
+| **Servings**   | 8       |
 
 ---
 
